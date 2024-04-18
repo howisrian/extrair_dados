@@ -56,5 +56,5 @@ Função responsável por extrair dados de um arquivo PDF e adicionar esses dado
 Para executar o script, use o comando a seguir no terminal ou prompt de comando:
 
 ```bash
-python script.py
+python extrair_dados.py
 ```
