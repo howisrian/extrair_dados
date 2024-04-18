@@ -16,6 +16,7 @@ As bibliotecas `pdfplumber` e `openpyxl` podem ser instaladas usando o comando p
 
 ```bash
 pip install pdfplumber openpyxl
+```
 
 ## Funções
 
@@ -56,3 +57,4 @@ Para executar o script, use o comando a seguir no terminal ou prompt de comando:
 
 ```bash
 python script.py
+```
