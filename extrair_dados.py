@@ -4,19 +4,8 @@ from openpyxl.utils import get_column_letter
 from datetime import datetime
 
 def extrair_dados(pdf_file, buscar, excel_file_path, nome_unidade):
-    """
-    Extrai dados de um arquivo PDF com base em palavras ou frases específicas e adiciona esses dados a uma planilha do Excel.
-    
-    Args:
-        pdf_file (str): Caminho para o arquivo PDF.
-        buscar (list): Lista de palavras ou frases para buscar nos PDFs.
-        excel_file_path (str): Caminho para o arquivo Excel onde os dados serão adicionados.
-        nome_unidade (str): Nome da unidade que será adicionada à coluna "Unidade".
-    
-    Returns:
-        None
-    """
-    # Inicializar dicionário para armazenar dados extraídos
+   
+    # Inicializar dicionário para armazenar dados extraídos com valores 0
     dados_extraidos = {palavra_ou_frase: 0 for palavra_ou_frase in buscar}
     
     grandezas = ["GB", "TB", "MB", "KB"]
@@ -84,15 +73,19 @@ def extrair_dados(pdf_file, buscar, excel_file_path, nome_unidade):
             sheet[f"{coluna_letra}{proxima_linha}"].value = data_atual
             break
 
-    # Adicionar os dados extraídos à planilha "GERAL"
+    # Adicionar os dados extraídos à planilha "Geral"
     for palavra_ou_frase in buscar:
         for coluna in range(1, sheet.max_column + 1):
             coluna_letra = get_column_letter(coluna)
             celula = sheet[f"{coluna_letra}1"]
             
             if celula.value == palavra_ou_frase:
+                # Se os dados extraídos são None, substitua por zero
+                valor = dados_extraidos[palavra_ou_frase]
+                if valor is None:
+                    valor = 0
                 nova_celula = sheet[f"{coluna_letra}{proxima_linha}"]
-                nova_celula.value = dados_extraidos[palavra_ou_frase]
+                nova_celula.value = valor
                 break
 
     # Salvar o arquivo Excel
@@ -100,9 +93,9 @@ def extrair_dados(pdf_file, buscar, excel_file_path, nome_unidade):
 
 # Lista de caminhos para os arquivos PDF
 pdf_paths = [
-    '../APRESENTAR/GRU/abril/Firewall GRU - Report.pdf',
-    '../APRESENTAR/BA/abril/Firewall Bdo - Report.pdf',
-    '../APRESENTAR/SP/abril/Firewall SP - Report.pdf'
+    './GRU/abril/Firewall GRU - Report.pdf',
+    './BA/abril/Firewall Bdo - Report.pdf',
+    './SP/abril/Firewall SP - Report.pdf'
 ]
 
 # Lista de nomes das unidades correspondentes
@@ -113,7 +106,7 @@ unidades = [
 ]
 
 # Caminho para o arquivo Excel
-excel_file_path = '../pipeline/test.xlsx'
+excel_file_path = './test.xlsx'
 
 # Lista de palavras ou frases para buscar nos PDFs
 buscar = [
@@ -139,4 +132,4 @@ buscar = [
 for i, pdf_path in enumerate(pdf_paths):
     extrair_dados(pdf_path, buscar, excel_file_path, unidades[i])
 
-print("Dados extraídos com sucesso!")
+print("Dados extraidos com sucesso!")
